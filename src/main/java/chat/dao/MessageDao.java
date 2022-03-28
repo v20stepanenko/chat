@@ -1,8 +1,8 @@
 package chat.dao;
 
-import chat.dto.SendMessageDto;
 import chat.exception.DataProcessingException;
 import chat.model.Message;
+import chat.model.User;
 import chat.util.ConnectionUtil;
 
 import java.sql.*;
@@ -17,7 +17,7 @@ public class MessageDao {
              PreparedStatement createMessageStatement =
                         connection.prepareStatement(
                              insertQuery, Statement.RETURN_GENERATED_KEYS)) {
-            createMessageStatement.setLong(1, message.getOwnerId());
+            createMessageStatement.setLong(1, message.getOwner().getId());
             createMessageStatement.setString(2, message.getText());
             createMessageStatement.executeUpdate();
             ResultSet resultSet = createMessageStatement.getGeneratedKeys();
@@ -30,29 +30,30 @@ public class MessageDao {
         return message;
     }
 
-    public List<SendMessageDto> loadMessages(int limit) {
-        String selectQuery = "SELECT name, text"
+    public List<Message> loadMessages(int limit) {
+        String selectQuery = "SELECT name, text, owner_id"
                 + " FROM messages m"
                 + " JOIN users u on m.owner_id = u.id"
                 + " ORDER BY m.timestamp"
                 + " LIMIT ?";
-        List<SendMessageDto> sendMessageDtos = new ArrayList<>();
+        List<Message> sendMessages = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
              PreparedStatement loadMessagesStatement =
                      connection.prepareStatement(selectQuery)) {
             loadMessagesStatement.setLong(1, limit);
             ResultSet resultSet = loadMessagesStatement.executeQuery();
             while (resultSet.next()) {
-                sendMessageDtos.add(parseMessagesDto(resultSet));
+                sendMessages.add(parseMessage(resultSet));
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't load pack messages from db", e);
         }
-        return sendMessageDtos;
+        return sendMessages;
     }
 
-    public SendMessageDto parseMessagesDto(ResultSet resultSet) throws SQLException {
-        return new SendMessageDto(resultSet.getString(1),
-                resultSet.getString((2)));
+    public Message parseMessage(ResultSet resultSet) throws SQLException {
+        User owner = new User(resultSet.getString("name"));
+        owner.setId(resultSet.getLong("owner_id"));
+        return new Message(resultSet.getString("text"), owner);
     }
 }

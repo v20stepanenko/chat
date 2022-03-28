@@ -45,14 +45,6 @@ public class UserDao {
         }
     }
 
-    private User getUser(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getObject("id", Long.class);
-        String name = resultSet.getString("name");
-        User user = new User(name);
-        user.setId(id);
-        return user;
-    }
-
     public Optional<User> get(Long id) {
         String query = "SELECT * FROM users WHERE id = (?)";
         try (Connection connection = ConnectionUtil.getConnection();
@@ -67,5 +59,13 @@ public class UserDao {
         } catch (SQLException e) {
             throw new DataProcessingException("Couldn't get user by id: " + id, e);
         }
+    }
+
+    private User getUser(ResultSet resultSet) throws SQLException {
+        Long id = resultSet.getObject("id", Long.class);
+        String name = resultSet.getString("name");
+        User user = new User(name);
+        user.setId(id);
+        return user;
     }
 }

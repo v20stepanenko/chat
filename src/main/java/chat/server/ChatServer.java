@@ -1,8 +1,9 @@
 package chat.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import chat.dto.SendMessageDto;
+import chat.dto.MessageDto;
 import chat.model.Message;
 import chat.model.User;
 import chat.service.MessageService;
@@ -22,13 +23,15 @@ import java.util.Set;
 @ServerEndpoint("/chat")
 public class ChatServer {
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
+    private final static ObjectMapper objectMapper = new ObjectMapper();
     private final MessageService messageService = new MessageService();
     private final UserService userService = new UserService();
+
 
     @OnOpen
     public void onOpen(Session session) {
         System.out.println(session.getId() + " opened a connection");
-        List<SendMessageDto> sendMessageDtos = messageService.loadMessages(50);
+        List<MessageDto> sendMessageDtos = messageService.loadMessages(50);
         ObjectMapper objectMapper = new ObjectMapper();
         String toJson = "";
         try {
@@ -46,12 +49,10 @@ public class ChatServer {
 
     @OnMessage
     public void onMessage(String json, Session session) {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Message message = objectMapper.readValue(json, Message.class);
+            Message message = parseToMessage(json);
             messageService.save(message);
-            User user = userService.findById(message.getOwnerId());
-            SendMessageDto sendMessageDto = new SendMessageDto(message.getText(), user.getName());
+            MessageDto sendMessageDto = new MessageDto(message.getText(), message.getOwner().getName());
             String sendJson = objectMapper.writeValueAsString(sendMessageDto);
             sessions.forEach(sessionElement -> {
                 try {
@@ -63,6 +64,13 @@ public class ChatServer {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+
+    private Message parseToMessage(String json) throws JsonProcessingException {
+        JsonNode jsonNodeRoot = objectMapper.readTree(json);
+        String messageText = jsonNodeRoot.get("text").asText();
+        User owner = userService.findById(jsonNodeRoot.get("ownerId").asLong());
+        return new Message(messageText, owner);
     }
 
     @OnClose

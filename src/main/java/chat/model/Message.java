@@ -5,7 +5,12 @@ import java.util.Objects;
 public class Message {
     private Long id;
     private String text;
-    private Long ownerId;
+    private User owner;
+
+    public Message(String text, User owner){
+        this.text = text;
+        this.owner = owner;
+    }
 
     public Long getId() {
         return id;
@@ -23,12 +28,12 @@ public class Message {
         this.text = text;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -36,20 +41,11 @@ public class Message {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return text.equals(message.text) && ownerId.equals(message.ownerId);
+        return text.equals(message.text) && owner.equals(message.owner);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(text, ownerId);
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", ownerId=" + ownerId +
-                '}';
+        return Objects.hash(text, owner);
     }
 }
