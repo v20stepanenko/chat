@@ -81,5 +81,8 @@ public class ChatServer {
     @OnClose
     public void onClose(Session session) {
         sessions.remove(session);
+        logger.info("ChatServer.onClose was called");
+        logger.info("WebSocket session " + session.getId() + " closed a connection");
+
     }
 }
