@@ -24,9 +24,9 @@ public class ChatController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        logger.info("chatController servlet was called.");
         Long userId = (Long) req.getSession().getAttribute(USER_ID);
         User user = userService.findById(userId);
+        logger.info("СhatController doGet was called by user: " + user.getName());
         List<MessageDto> messages = messageService.loadMessages(50);
         req.setAttribute("user", user);
         req.setAttribute("messages", messages);

@@ -48,4 +48,12 @@ public class Message {
     public int hashCode() {
         return Objects.hash(text, owner);
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "text='" + text + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

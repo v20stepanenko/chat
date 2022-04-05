@@ -32,7 +32,8 @@ public class ChatServer {
 
     @OnOpen
     public void onOpen(Session session) {
-        System.out.println(session.getId() + " opened a connection");
+        logger.info("ChatServer.onOpen was called");
+        logger.info("WebSocket session " + session.getId() + " opened a connection");
         List<MessageDto> sendMessageDtos = messageService.loadMessages(50);
         ObjectMapper objectMapper = new ObjectMapper();
         String toJson = "";
@@ -51,11 +52,10 @@ public class ChatServer {
 
     @OnMessage
     public void onMessage(String json, Session session) {
-        logger.info("chatServer onMessage was called");
-        System.out.println("chatServer onMessage was called");
         try {
-            logger.info("chatController servlet was called.");
             Message message = parseToMessage(json);
+            logger.info("chatServer onMessage was called, session: " + session
+                    + "message: " + message);
             messageService.save(message);
             MessageDto sendMessageDto = new MessageDto(message.getText(), message.getOwner().getName());
             String sendJson = objectMapper.writeValueAsString(sendMessageDto);

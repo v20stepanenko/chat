@@ -1,13 +1,18 @@
 package chat.org.dao;
 
+import chat.org.controller.users.LoginController;
 import chat.org.exception.DataProcessingException;
 import chat.org.model.User;
 import chat.org.util.ConnectionUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Optional;
 
 public class UserDao {
+
+    private static final Logger logger = LogManager.getLogger(UserDao.class);
 
     public User create(String name){
         User user = new User(name);
@@ -18,6 +23,7 @@ public class UserDao {
                          Statement.RETURN_GENERATED_KEYS)) {
             createUserStatement.setString(1, name);
             createUserStatement.executeUpdate();
+            logger.info("UserDao.create was called SQL query: " + query);
             ResultSet resultSet = createUserStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 user.setId(resultSet.getObject(1, Long.class));
@@ -35,6 +41,7 @@ public class UserDao {
                  PreparedStatement getUserStatement = connection.prepareStatement(query)) {
             getUserStatement.setString(1, name);
             ResultSet resultSet = getUserStatement.executeQuery();
+            logger.info("UserDao.findByName was called SQL query: " + query);
             User user = null;
             if (resultSet.next()) {
                 user = getUser(resultSet);
@@ -51,6 +58,7 @@ public class UserDao {
                  PreparedStatement getUserStatement = connection.prepareStatement(query)) {
             getUserStatement.setLong(1, id);
             ResultSet resultSet = getUserStatement.executeQuery();
+            logger.info("UserDao.get was called SQL query: " + query);
             User user = null;
             if (resultSet.next()) {
                 user = getUser(resultSet);
