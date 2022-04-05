@@ -1,4 +1,4 @@
-package chat.dto;
+package chat.org.dto;
 
 public class MessageDto {
     public String text;

@@ -1,9 +1,9 @@
-package chat.dao;
+package chat.org.dao;
 
-import chat.exception.DataProcessingException;
-import chat.model.Message;
-import chat.model.User;
-import chat.util.ConnectionUtil;
+import chat.org.exception.DataProcessingException;
+import chat.org.model.Message;
+import chat.org.model.User;
+import chat.org.util.ConnectionUtil;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package chat.controller.users;
+package chat.org.controller.users;
 
-import chat.model.User;
-import chat.service.AuthenticationService;
-import chat.service.AuthenticationServiceImpl;
+import chat.org.model.User;
+import chat.org.service.AuthenticationService;
+import chat.org.service.AuthenticationServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +29,7 @@ public class LoginController extends HttpServlet {
             User user = authenticationService.login(name);
             HttpSession session = req.getSession();
             session.setAttribute(USER_ID, user.getId());
-            resp.sendRedirect("/chat");
+            resp.sendRedirect("/chat/org");
         } catch (IOException e) {
             req.setAttribute("errorMsg", e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);

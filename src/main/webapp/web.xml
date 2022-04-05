@@ -5,7 +5,7 @@
          version="4.0">
     <filter>
         <filter-name>authenticationFilter</filter-name>
-        <filter-class>chat.filter.AuthenticationFilter</filter-class>
+        <filter-class>chat.org.filter.AuthenticationFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>authenticationFilter</filter-name>
@@ -13,7 +13,7 @@
     </filter-mapping>
     <servlet>
         <servlet-name>chat</servlet-name>
-        <servlet-class>chat.controller.ChatController</servlet-class>
+        <servlet-class>chat.org.controller.ChatController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>chat</servlet-name>
@@ -25,7 +25,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>login</servlet-name>
-        <servlet-class>chat.controller.users.LoginController</servlet-class>
+        <servlet-class>chat.org.controller.users.LoginController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>login</servlet-name>

@@ -1,8 +1,8 @@
-package chat.service;
+package chat.org.service;
 
-import chat.dao.MessageDao;
-import chat.dto.MessageDto;
-import chat.model.Message;
+import chat.org.dao.MessageDao;
+import chat.org.dto.MessageDto;
+import chat.org.model.Message;
 
 import java.util.List;
 import java.util.stream.Collectors;

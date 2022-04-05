@@ -1,14 +1,13 @@
-package chat.server;
+package chat.org.server;
 
-import chat.controller.ChatController;
+import chat.org.service.MessageService;
+import chat.org.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import chat.dto.MessageDto;
-import chat.model.Message;
-import chat.model.User;
-import chat.service.MessageService;
-import chat.service.UserService;
+import chat.org.dto.MessageDto;
+import chat.org.model.Message;
+import chat.org.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

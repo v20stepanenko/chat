@@ -1,4 +1,4 @@
-package chat.model;
+package chat.org.model;
 
 import java.util.Objects;
 

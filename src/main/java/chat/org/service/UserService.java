@@ -1,7 +1,7 @@
-package chat.service;
+package chat.org.service;
 
-import chat.dao.UserDao;
-import chat.model.User;
+import chat.org.dao.UserDao;
+import chat.org.model.User;
 
 import java.util.Optional;
 

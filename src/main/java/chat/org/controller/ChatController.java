@@ -1,9 +1,9 @@
-package chat.controller;
+package chat.org.controller;
 
-import chat.dto.MessageDto;
-import chat.model.User;
-import chat.service.MessageService;
-import chat.service.UserService;
+import chat.org.dto.MessageDto;
+import chat.org.model.User;
+import chat.org.service.MessageService;
+import chat.org.service.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

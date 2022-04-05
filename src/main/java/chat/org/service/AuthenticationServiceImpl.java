@@ -1,6 +1,6 @@
-package chat.service;
+package chat.org.service;
 
-import chat.model.User;
+import chat.org.model.User;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
