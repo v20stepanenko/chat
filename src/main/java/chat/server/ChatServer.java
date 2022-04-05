@@ -1,5 +1,6 @@
 package chat.server;
 
+import chat.controller.ChatController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,8 @@ import chat.model.Message;
 import chat.model.User;
 import chat.service.MessageService;
 import chat.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -26,7 +29,7 @@ public class ChatServer {
     private final static ObjectMapper objectMapper = new ObjectMapper();
     private final MessageService messageService = new MessageService();
     private final UserService userService = new UserService();
-
+    private static final Logger logger = LogManager.getLogger(ChatServer.class);
 
     @OnOpen
     public void onOpen(Session session) {
@@ -49,7 +52,10 @@ public class ChatServer {
 
     @OnMessage
     public void onMessage(String json, Session session) {
+        logger.info("chatServer onMessage was called");
+        System.out.println("chatServer onMessage was called");
         try {
+            logger.info("chatController servlet was called.");
             Message message = parseToMessage(json);
             messageService.save(message);
             MessageDto sendMessageDto = new MessageDto(message.getText(), message.getOwner().getName());
